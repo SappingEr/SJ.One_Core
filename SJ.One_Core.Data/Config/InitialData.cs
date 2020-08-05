@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
 using SJ.One_Core.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SJ.One_Core.Data.Config
@@ -31,7 +28,8 @@ namespace SJ.One_Core.Data.Config
                 User user = new User
                 {
                     UserName = username,
-                    Email = email
+                    Email = email,
+                    RegistrationDate = DateTime.Now.Date
                 };
 
                 IdentityResult result = await userManager

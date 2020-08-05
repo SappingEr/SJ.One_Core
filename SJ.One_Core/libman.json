@@ -17,6 +17,10 @@
     {
       "library": "octicons@8.5.0",
       "destination": "wwwroot/lib/octicons/"
+    },
+    {
+      "library": "bootstrap-select@1.13.18",
+      "destination": "wwwroot/lib/bootstrap-select/"
     }
   ]
 }

@@ -3,37 +3,62 @@
 @{
     ViewData["Title"] = "Регистрация";
 }
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="row">
+    <div class="col"></div>
+    <div class="card col-sm-7 col-md-6 col-lg-5 col-xl-4 mx-1">
+        <div class="card-body">
+            <h2 class="card-title text-center">Регистрация</h2>
+            <hr />
+            <form asp-action="Register">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label" style="display:none"></label>
+                    <input asp-for="Email" class="form-control" aria-describedby="loginHelp" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <small id="loginHelp" class="form-text text-muted" style="display:none">
+                        *Название учетной записи может содержать латинские символы и цифры.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label" style="display:none"></label>
+                    <input asp-for="Password" class="form-control" aria-describedby="passwordHelp" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <small id="passwordHelp" class="form-text text-muted" style="display:none">
+                        *Длина пароля должна быть от 8 до 20 знаков, может включать цифры, буквы и символы
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword" class="control-label" style="display:none"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-danger btn-block" role="button">Отмена</a>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary btn-block">Далее</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col"></div>
 </div>
 
 @section Scripts {
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        $(document).ready(function () {
+            $(".form-control").focus(function () {
+                $(".control-label, .form-text").show('slow');
+            });
+        });
+
+    </script>
 }

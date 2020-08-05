@@ -28,7 +28,8 @@ namespace SJ.One_Core
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityContext>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             UserManager<User> userManager, RoleManager<IdentityRole> roleManager)

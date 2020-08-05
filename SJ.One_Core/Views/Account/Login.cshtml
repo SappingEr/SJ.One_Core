@@ -1,0 +1,63 @@
+﻿@model SJ.One_Core.Models.AccountViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Вход";
+}
+
+<div class="row">
+    <div class="col"></div>
+    <div class="card col-sm-7 col-md-6 col-lg-5 col-xl-4 mx-1">
+        <div class="card-body">
+            <h2 class="card-title text-center">Вход</h2>
+            <hr />
+            <form asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label" style="display: none"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label" style="display: none"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div id="logRemember" class="form-group form-check" style="display:none">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
+                    </label>
+                </div>
+                <div id="logButton" class="form-group" style="display:none">
+                    <button type="submit" class="btn btn-success btn-block">Войти <i class="fa fa-sign-in-alt"></i></button>
+                </div>
+            </form>
+            <hr />
+            <a asp-controller="Account" asp-action="Register" class="btn btn-light btn-block" role="button">Регистрация</a>
+            <a asp-controller="Account" asp-action="ForgotPassword" class="btn btn-link btn-block" role="button">Я не помню пароль</a>
+            <hr />
+            <div id="loginLinks">
+                <h4>Войти с помощью:</h4>
+                <a asp-controller="Account" asp-action="GoogleLogin" class="card-link"><img src="~/files/pic/Google.png" height="45" /></a>
+                <a asp-controller="Account" asp-action="VKLogin" class="card-link"><img src="~/files/pic/VK.png" height="42" /></a>
+            </div>
+        </div>
+    </div>
+    <div class="col"></div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        $(document).ready(function () {
+            $('.form-control').focus(function () {
+                $('.control-label').show();
+                $('#logButton, #logRemember, #loginLinks').show(1000);
+            });
+        });
+
+    </script>
+
+
+}
