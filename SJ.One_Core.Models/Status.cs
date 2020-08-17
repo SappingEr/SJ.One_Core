@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SJ.One_Core.Models
 {
     public enum Status
     {
+        [Display(Name = "Активен")]
         Active,
+        [Display(Name = "Заблокирован")]
         Blocked
     }
 }

@@ -159,17 +159,17 @@ namespace SJ.One_Core.Controllers
             return View(dataModel);
         }
 
-        [HttpGet]
-        public IActionResult СhooseLocality()
-        {
+        //[HttpGet]
+        //public IActionResult СhooseLocality()
+        //{
 
-        }
+        //}
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult СhooseLocality()
-        {
+        //[HttpPost, ValidateAntiForgeryToken]
+        //public IActionResult СhooseLocality()
+        //{
 
-        }
+        //}
 
 
 
