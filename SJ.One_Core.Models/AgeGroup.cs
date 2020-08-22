@@ -8,6 +8,6 @@ namespace SJ.One_Core.Models
         public byte From { get; set; }
         public byte To { get; set; }
         public Gender Gender { get; set; }
-        public ICollection<AgeGroup_Race> Races { get; set; } = new List<AgeGroup_Race>();
+        public List<AgeGroup_Race> Races { get; set; } = new List<AgeGroup_Race>();
     }
 }

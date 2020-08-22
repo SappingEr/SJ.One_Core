@@ -1,4 +1,4 @@
-﻿using SJ.One_Core.Models.Interfaces;
+﻿using SJ.One_Core.Models.ModelInterfaces;
 using System;
 
 namespace SJ.One_Core.Models

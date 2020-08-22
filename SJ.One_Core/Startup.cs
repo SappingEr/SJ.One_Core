@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SJ.One_Core.Data.Config;
+using SJ.One_Core.Data;
 using SJ.One_Core.Models;
 
 namespace SJ.One_Core

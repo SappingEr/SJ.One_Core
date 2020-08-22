@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SJ.One_Core.Models.Interfaces
+namespace SJ.One_Core.Models.ModelInterfaces
 {
     interface ITiming
     {

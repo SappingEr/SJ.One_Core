@@ -15,9 +15,9 @@ namespace SJ.One_Core.Models
         public DateTime EndRegDate { get; set; }
         public int LocalityId { get; set; }
         public Locality Locality { get; set; }
-        public ICollection<Document> EventDocuments { get; set; }
-        public ICollection<EventImage> EventPhotos { get; set; }
-        public ICollection<Event_Tag> Tags { get; set; }
-        public ICollection<Race> RacesEvent { get; set; }
+        public List<Document> EventDocuments { get; set; }
+        public List<EventImage> EventPhotos { get; set; }
+        public List<Event_Tag> Tags { get; set; }
+        public List<Race> RacesEvent { get; set; }
     }
 }

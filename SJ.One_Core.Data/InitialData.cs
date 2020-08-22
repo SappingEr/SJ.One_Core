@@ -3,7 +3,7 @@ using SJ.One_Core.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace SJ.One_Core.Data.Config
+namespace SJ.One_Core.Data
 {
     public class InitialData
     {

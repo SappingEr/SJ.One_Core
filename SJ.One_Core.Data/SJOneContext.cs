@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SJ.One_Core.Data.Config;
 using SJ.One_Core.Models;
 
-namespace SJ.One_Core.Data.Config
+namespace SJ.One_Core.Data
 {
     public class SJOneContext : IdentityDbContext<User>
     {
+        internal SJOneContext()
+        {
+        }
 
         public DbSet<AutoTiming> AutoTimings { get; set; }
         public DbSet<Country> Countries { get; set; }

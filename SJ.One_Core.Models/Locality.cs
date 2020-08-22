@@ -7,8 +7,8 @@ namespace SJ.One_Core.Models
         public string Name { get; set; }
         public int RegionId { get; set; }
         public Region Region { get; set; }
-        public ICollection<User> LocalityUsers { get; set; }
-        public ICollection<SportEvent> LocalitySportEvents { get; set; }
-        public ICollection<SportClub> LocalitySportClubs { get; set; }
+        public List<User> LocalityUsers { get; set; }
+        public List<SportEvent> LocalitySportEvents { get; set; }
+        public List<SportClub> LocalitySportClubs { get; set; }
     }
 }

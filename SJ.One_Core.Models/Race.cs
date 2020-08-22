@@ -20,9 +20,9 @@ namespace SJ.One_Core.Models
         public string MainJudgeRaceId { get; set; }
         public User MainJudgeRace { get; set; }
         public bool AgeFromEvent { get; set; }
-        public ICollection<AgeGroup_Race> AgeGroups { get; set; }
-        public ICollection<StartNumber> StartNumbersRace { get; set; } 
-        public ICollection<User_Race> RaceJudges { get; set; } 
+        public List<AgeGroup_Race> AgeGroups { get; set; }
+        public List<StartNumber> StartNumbersRace { get; set; } 
+        public List<User_Race> RaceJudges { get; set; } 
         public int SportEventId { get; set; }
         public SportEvent SportEvent { get; set; }
     }

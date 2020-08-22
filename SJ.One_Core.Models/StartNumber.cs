@@ -11,6 +11,6 @@ namespace SJ.One_Core.Models
         public User User { get; set; }
         public int RaceId { get; set; }
         public Race Race { get; set; }
-        public ICollection<HandTiming> HandTimingsNumber { get; set; }
+        public List<HandTiming> HandTimingsNumber { get; set; }
     }
 }

@@ -20,12 +20,12 @@ namespace SJ.One_Core.Models
         public SportClub SportClub { get; set; }
         public DateTime? DOB { get; set; }
         public DateTime RegistrationDate { get; set; }        
-        public ICollection<StartNumber> StartNumbersUser { get; set; } 
-        public ICollection<Race> MainJudgeRaces { get; set; }
-        public ICollection<User_Race> JudgeRaces { get; set; } 
-        public ICollection<StartNumber> StartNumbersJudge { get; set; }
-        public ICollection<HandTiming> HandTimingsJudge { get; set; } 
-        public ICollection<AutoTiming> AutoTimingsJudge { get; set; } 
-        public ICollection<Protocol> Protocols { get; set; }
+        public List<StartNumber> StartNumbersUser { get; set; } 
+        public List<Race> MainJudgeRaces { get; set; }
+        public List<User_Race> JudgeRaces { get; set; } 
+        public List<StartNumber> StartNumbersJudge { get; set; }
+        public List<HandTiming> HandTimingsJudge { get; set; } 
+        public List<AutoTiming> AutoTimingsJudge { get; set; } 
+        public List<Protocol> Protocols { get; set; }
     }
 }
