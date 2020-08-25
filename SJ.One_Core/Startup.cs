@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SJ.One_Core.Data;
+using SJ.One_Core.Data.Repositories;
 using SJ.One_Core.Models;
 
 namespace SJ.One_Core
@@ -31,6 +32,21 @@ namespace SJ.One_Core
 
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
+            services.AddScoped<IAgeGroupRepository, AgeGroupRepository>();
+            services.AddScoped<IAutoTimingRepository, AutoTimingRepository>();
+            services.AddScoped<ICountryRepository, CountryRepository>();
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
+            services.AddScoped<IEventImageRepository, EventImageRepository>();
+            services.AddScoped<IHandTimingRepository, HandTimingRepository>();
+            services.AddScoped<ILocalityRepository, LocalityRepository>();
+            services.AddScoped<IProtocolRepository, ProtocolRepository>();
+            services.AddScoped<IRaceRepository, RaceRepository>();
+            services.AddScoped<IRegionRepository, RegionRepository>();
+            services.AddScoped<ISportClubRepository, SportClubRepository>();
+            services.AddScoped<ISportEventRepository, SportEventRepository>();
+            services.AddScoped<IStartNumberRepository, StartNumberRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();           
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             UserManager<User> userManager, RoleManager<IdentityRole> roleManager)

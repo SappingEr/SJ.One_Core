@@ -1,0 +1,114 @@
+﻿@model SJ.One_Core.Models.AccountViewModels.LocalityViewModel
+
+@{
+    ViewData["Title"] = "Населённый пункт";
+}
+<link rel="stylesheet" href="~/lib/bootstrap-select/css/bootstrap-select.min.css" />
+<div class="row">
+    <div class="col"></div>
+    <div class="card col-sm-7 col-md-6 col-lg-5 col-xl-4 mx-1">
+        <div class="card-body">
+            <h2 class="card-title text-center">Населённый пункт</h2>
+            <hr />
+            <form id="AjaxAntiForgeryForm" asp-action="СhooseLocality">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="Id" type="hidden" value="@Model.Id" />
+                <div class="form-group">
+                    <label asp-for="RegionId" class="control-label"></label>
+                    <select asp-for="RegionId"
+                            id="regionList"
+                            aria-describedby="regionHelp"
+                            class="selectpicker form-control"
+                            data-live-search="true"
+                            data-size="6"
+                            asp-items="@Model.Regions">
+                        <option>- Регион -</option>
+                    </select>
+                    <span asp-validation-for="RegionId" class="text-danger"></span>
+                    <small id="regionHelp" class="form-text text-muted">
+                        *Выберите регион из списка.
+                    </small>
+                </div>
+                @if (Model.Localities == null)
+                {
+                    <div id="localities" class="form-group" style="display:none">
+                        <label asp-for="LocalityId" class="control-label"></label>
+                        <select asp-for="LocalityId" class="form-control"
+                                asp-items="@(new SelectList(Enumerable.Empty<SelectListItem>()))">
+                        </select>
+                    </div>
+                }
+                else
+                {
+                    <div id="localities" class="form-group">
+                        <label asp-for="LocalityId" class="control-label"></label>
+                        <div class="input-group">
+                            <select asp-for="LocalityId"
+                                    id="regionList"
+                                    aria-describedby="localityHelp"
+                                    class="selectpicker form-control"
+                                    data-live-search="true"
+                                    data-size="6"
+                                    asp-items="@Model.Localities">
+                                <option>- Населённый пункт -</option>
+                            </select>
+                            <div class="input-group-append">
+                                <button id="newLocality" class="btn btn-secondary" type="button"><span class="fa fa-plus"></span></button>
+                            </div>
+                        </div>
+                        <span asp-validation-for="LocalityId" class="text-danger"></span>
+                        <small id="regionHelp" class="form-text text-muted">
+                            *Выберите населённый пункт из списка.Если нужного названия нет, Вы можете добавить его самостоятельно.
+                        </small>
+                    </div>
+                }
+                <div id="newLocalityForm" style="display:none">
+                    <div class="form-group">
+                        <label>Новый населённый пункт</label>
+                        <div class="input-group">
+                            <input type="text" name="Locality" id="locality" class="form-control" style="text-transform:capitalize" aria-describedby="newLocalityHelp" />
+                            <div class="input-group-append">
+                                <button id="addLocality" class="btn btn-success" type="button" disabled><span class="fa fa-plus"></span></button>
+                            </div>
+                            <div class="input-group-append">
+                                <button id="toListLocality" class="btn btn-outline-info" type="button"><span class="fa fa-times"></span></button>
+                            </div>
+                        </div>
+                        <small id="newLocalityHelp" class="form-text text-muted">
+                            *Введите название нового населённого пункта. Он добавится в выбранный регион.
+                        </small>
+
+                    </div>
+                </div>
+                @if (Model.AddClub == true)
+                {
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Club" /> @Html.DisplayNameFor(model => model.Club)
+                        </label>
+                    </div>
+                }
+                <hr />
+                <div class="row">
+                    <div class="col">
+                        <a href="@Model.ReturnUrl" class="btn btn-secondary btn-block" role="button">Назад</a>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col"></div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_BootstrapSelectScriptsPartial");
+        <script src="~/js/chooseLocality.js"></script>
+    }
+}

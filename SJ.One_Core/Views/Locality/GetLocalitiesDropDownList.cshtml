@@ -1,0 +1,27 @@
+﻿@model SJ.One_Core.Models.LocalityViewModels.LocalitiesDropDownListViewModel
+
+<label asp-for="LocalityId" class="control-label"></label>
+<div class="input-group">
+    <select asp-for="LocalityId"
+            id="regionList"
+            aria-describedby="localityHelp"
+            class="selectpicker form-control"
+            data-live-search="true"
+            data-size="6"
+            asp-items="@Model.Localities">
+        <option>- Населённый пункт -</option>
+    </select>
+    <div class="input-group-append">
+        <button id="newLocality" class="btn btn-secondary" type="button"><span class="fa fa-plus"></span></button>
+    </div>
+</div>
+<span asp-validation-for="LocalityId" class="text-danger"></span>
+<small id="regionHelp" class="form-text text-muted">
+    *Выберите населённый пункт из списка.Если нужного названия нет, Вы можете добавить его самостоятельно.
+</small>
+
+<script>
+    $(function () {
+        $('.selectpicker').selectpicker();
+    });
+</script>

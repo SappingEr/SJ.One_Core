@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using SJ.One_Core.Data.Repositories;
 using SJ.One_Core.Models;
 using SJ.One_Core.Models.AccountViewModels;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SJ.One_Core.Controllers
@@ -11,14 +14,18 @@ namespace SJ.One_Core.Controllers
 
     public class AccountController : Controller
     {
-        private UserManager<User> userManager;
-        private SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
+        private readonly IRegionRepository regionRepository;
+        private readonly ISportClubRepository sportClubRepository;
 
-        public AccountController(UserManager<User> userMgr,
-                SignInManager<User> signinMgr)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,
+            IRegionRepository regionRepository, ISportClubRepository sportClubRepository)
         {
-            userManager = userMgr;
-            signInManager = signinMgr;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.regionRepository = regionRepository;
+            this.sportClubRepository = sportClubRepository;
         }
 
         [HttpGet]
@@ -128,7 +135,7 @@ namespace SJ.One_Core.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdUserData(UserDataViewModel dataModel)
         {
             if (ModelState.IsValid)
@@ -159,17 +166,75 @@ namespace SJ.One_Core.Controllers
             return View(dataModel);
         }
 
-        //[HttpGet]
-        //public IActionResult СhooseLocality()
-        //{
+        [HttpGet]
+        public async Task<IActionResult> СhooseLocality(string id)
+        {
+            User user = await userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                LocalityViewModel localityModel = new LocalityViewModel
+                {
+                    Id = id,
+                    ReturnUrl = Request.Headers["Referer"].ToString()
+                };
 
-        //}
+                if (user.Locality == null)
+                {
+                    localityModel.Regions = regionRepository.GetAll()
+                        .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Name });
+                }
+                else
+                {
+                    Region region = user.Locality.Region;
+                    int regionId = region.Id;
+                    localityModel.RegionId = regionId;
 
-        //[HttpPost, ValidateAntiForgeryToken]
-        //public IActionResult СhooseLocality()
-        //{
+                    localityModel.Regions = regionRepository.GetAll()
+                        .Select(r => new SelectListItem
+                        {
+                            Value = r.Id.ToString(),
+                            Text = r.Name,
+                            Selected = localityModel.RegionId.Equals(regionId)
+                        });
 
-        //}
+                    localityModel.Localities = region.Localities
+                        .Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name });
+                }
+                if (user.SportClub == null)
+                {
+                    localityModel.AddClub = true;
+                }
+                return View(localityModel);
+            }
+            return BadRequest();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> СhooseLocality(LocalityViewModel localityModel)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await userManager.FindByIdAsync(localityModel.Id);
+                user.Locality = regionRepository.GetOne(localityModel.RegionId)
+                    .Localities.Where(l => l.Id == localityModel.LocalityId).FirstOrDefault();
+                IdentityResult result = await userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    if (localityModel.Club == true)
+                    {
+                        return RedirectToAction("СhooseSportClub", new { localityModel.Id });
+                    }
+                    else
+                    {
+                        return RedirectToAction("Info", new { localityModel.Id });
+                    }
+                }
+                ModelState.AddModelError("", "Не удалось обновить данные пользователя");
+                return View(localityModel);
+
+            }
+            return View(localityModel);
+        }
 
 
 
@@ -205,7 +270,7 @@ namespace SJ.One_Core.Controllers
                             return Redirect(loginModel.ReturnUrl ?? "/");
                         }
                     }
-                    
+
                 }
                 ModelState.AddModelError(nameof(LoginViewModel.Email),
                     "Invalid user or password");

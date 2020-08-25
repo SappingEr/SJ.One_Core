@@ -51,10 +51,7 @@ namespace SJ.One_Core.Data.Repositories
         }
         public T GetOne(int? id) => dbset.Find(id);
 
-        public List<T> GetSome(Expression<Func<T, bool>> where)
-        {
-            throw new NotImplementedException();
-        }
+        public List<T> GetSome(Expression<Func<T, bool>> where) => dbset.Where(where).ToList();        
 
         public int Update(T entity)
         {
