@@ -17,14 +17,16 @@ namespace SJ.One_Core.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IRegionRepository regionRepository;
+        private readonly ILocalityRepository localityRepository;
         private readonly ISportClubRepository sportClubRepository;
 
         public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,
-            IRegionRepository regionRepository, ISportClubRepository sportClubRepository)
+            IRegionRepository regionRepository, ILocalityRepository localityRepository, ISportClubRepository sportClubRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.regionRepository = regionRepository;
+            this.localityRepository = localityRepository;
             this.sportClubRepository = sportClubRepository;
         }
 
@@ -210,30 +212,80 @@ namespace SJ.One_Core.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> СhooseLocality(LocalityViewModel localityModel)
+        public async Task<IActionResult> СhooseLocality([Bind("Id, LocalityId", "Club")] LocalityViewModel localityModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && localityModel.LocalityId > 0)
             {
                 User user = await userManager.FindByIdAsync(localityModel.Id);
-                user.Locality = regionRepository.GetOne(localityModel.RegionId)
-                    .Localities.Where(l => l.Id == localityModel.LocalityId).FirstOrDefault();
-                IdentityResult result = await userManager.UpdateAsync(user);
-                if (result.Succeeded)
+                Locality locality = localityRepository.GetOne(localityModel.LocalityId);
+                if (locality != null)
                 {
-                    if (localityModel.Club == true)
+                    user.Locality = locality;
+                    IdentityResult result = await userManager.UpdateAsync(user);
+                    if (result.Succeeded)
                     {
-                        return RedirectToAction("СhooseSportClub", new { localityModel.Id });
-                    }
-                    else
-                    {
-                        return RedirectToAction("Info", new { localityModel.Id });
+                        if (localityModel.Club)
+                        {
+                            return RedirectToAction("СhooseSportClub", new { localityModel.Id });
+                        }
+                        else
+                        {
+                            return RedirectToAction("Info", new { localityModel.Id });
+                        }
                     }
                 }
                 ModelState.AddModelError("", "Не удалось обновить данные пользователя");
                 return View(localityModel);
-
             }
             return View(localityModel);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> СhooseSportClub(string id)
+        {
+            User user = await userManager.FindByIdAsync(id);
+            Locality locality = localityRepository.GetOne(user.LocalityId);
+            if (user != null && locality != null)
+            {
+                SportClubViewModel model = new SportClubViewModel
+                {
+                    Id = id,
+                    ReturnUrl = Request.Headers["Referer"].ToString()
+                };
+
+                Region region = regionRepository.GetOne(locality.RegionId);
+
+                int regionId = region.Id;
+                int localityId = locality.Id;
+                model.ClubRegionId = regionId;
+                model.ClubLocalityId = localityId;
+
+                model.ClubRegions = regionRepository.GetAll()
+                   .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Name, Selected = model.ClubRegionId.Equals(regionId) });
+                
+                model.ClubLocalities = localityRepository.GetSome(l=>l.RegionId == regionId)
+                   .Select(i => new SelectListItem { Value = i.Id.ToString(), Text = i.Name, Selected = model.ClubLocalityId.Equals(localityId) });
+
+                model.Clubs = sportClubRepository.GetSome(c =>c.LocalityId == localityId)
+                    .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name });
+
+                return View(model);
+            }
+            return BadRequest();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> СhooseSportClub(SportClubViewModel clubModel)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await userManager.FindByIdAsync(clubModel.Id);
+                SportClub sportClub = sportClubRepository.GetOne(clubModel.ClubId);
+                sportClub.SportClubUsers.Add(user);
+                sportClubRepository.Update(sportClub);
+                return RedirectToAction("Info", new { clubModel.Id });
+            }
+            return View(clubModel);
         }
 
 

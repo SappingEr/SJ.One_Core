@@ -2,12 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SJ.One_Core.Models.AccountViewModels
 {
-    public class LocalityViewModel
+    public class SportClubViewModel
     {
         public string Id { get; set; }
 
@@ -16,18 +14,20 @@ namespace SJ.One_Core.Models.AccountViewModels
         [Required]
         [Display(Name = "Регион")]
         [Range(1, int.MaxValue, ErrorMessage = "Выберите регион")]
-        public int RegionId { get; set; }
-        public IEnumerable<SelectListItem> Regions { get; set; }
+        public int ClubRegionId { get; set; }
+        public IEnumerable<SelectListItem> ClubRegions { get; set; }
 
         [Required]
         [Display(Name = "Населённый пункт")]
         [Range(1, int.MaxValue, ErrorMessage = "Выберите населённый пункт")]
-        public int LocalityId { get; set; }
-        public IEnumerable<SelectListItem> Localities { get; set; }
+        public int ClubLocalityId { get; set; }
+        public IEnumerable<SelectListItem> ClubLocalities { get; set; }
 
-        public bool AddClub { get; set; }
 
-        [Display(Name = "Я состою в спортивном клубе")]
-        public bool Club { get; set; }
+        [Required]
+        [Display(Name = "Спортивный клуб")]
+        [Range(1, int.MaxValue, ErrorMessage = "Выберите клуб")]
+        public int ClubId { get; set; }
+        public IEnumerable<SelectListItem> Clubs { get; set; }
     }
 }

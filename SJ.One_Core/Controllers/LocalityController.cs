@@ -24,21 +24,20 @@ namespace SJ.One_Core.Controllers
             LocalitiesDropDownListViewModel localitiesModel = new LocalitiesDropDownListViewModel
             {
                 Localities = localityRepository.GetSome(l => l.RegionId == id)
-                .Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name })
+                    .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Name })
             };
             return PartialView(localitiesModel);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddNewLocality([Bind("RegionId,Name")] NewLocalityViewModel localityModel)
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult AddNewLocality([Bind("RegionId, Name")] NewLocalityViewModel localityModel)
         {
             Region region = regionRepository.GetOne(localityModel.RegionId);
 
             if (region != null && localityModel.Name != null && localityModel.Name.Length >= 0)
             {
                 var localities = localityRepository.GetByNameRegionLocalities(localityModel.RegionId, localityModel.Name);
-               
+
                 if (localities.Count > 0)
                 {
                     return Json(new { success = false, responseText = "Ошибка! " + localityModel.Name + " есть в списке!" });

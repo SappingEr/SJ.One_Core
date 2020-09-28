@@ -1,0 +1,289 @@
+﻿@model SJ.One_Core.Models.AccountViewModels.SportClubViewModel
+
+@{
+    ViewData["Title"] = "Спортивный клуб";
+}
+<link rel="stylesheet" href="~/lib/bootstrap-select/css/bootstrap-select.min.css" />
+<div class="row">
+    <div class="col"></div>
+    <div class="card col-sm-7 col-md-6 col-lg-5 col-xl-4 mx-1">
+        <div class="card-body">
+            <h2 class="card-title text-center">Спортивный клуб</h2>
+            <hr />
+            <form id="AjaxAntiForgeryForm" asp-action="СhooseSportClub">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="Id" type="hidden" value="@Model.Id" />
+                <div class="form-group">
+                    <label asp-for="ClubRegionId" class="control-label"></label>
+                    <select asp-for="ClubRegionId"
+                            id="clubRegionList"
+                            class="selectpicker form-control"
+                            data-live-search="true"
+                            data-size="6"
+                            asp-items="@Model.ClubRegions">
+                        <option>- Регион -</option>
+                    </select>
+                    <span asp-validation-for="ClubRegionId" class="text-danger"></span>
+                </div>
+                <div id="clubLocalities" class="form-group">
+                    <div id="localities" class="form-group">
+                        <label asp-for="ClubLocalityId" class="control-label"></label>
+                        <div class="input-group">
+                            <select asp-for="ClubLocalityId"
+                                    id="clubLocalityList"
+                                    aria-describedby="localityRegionHelp"
+                                    class="selectpicker form-control"
+                                    data-live-search="true"
+                                    data-size="6"
+                                    asp-items="@Model.ClubLocalities">
+                                <option>- Населённый пункт -</option>
+                            </select>
+                            <div class="input-group-append">
+                                <button id="newLocality" class="btn btn-secondary" type="button"><span class="fa fa-plus"></span></button>
+                            </div>
+                        </div>
+                        <span asp-validation-for="ClubLocalityId" class="text-danger"></span>
+                        <small id="localityRegionHelp" class="form-text text-muted">
+                            *Выберите населённый пункт из списка. Если нужного названия нет, Вы можете добавить его самостоятельно.
+                        </small>
+                    </div>
+                </div>
+                <div id="newClubLocalityForm" style="display:none">
+                    <div class="form-group">
+                        <label>Новый населённый пункт</label>
+                        <div class="input-group">
+                            <input type="text" name="Locality" id="clubLocality" class="form-control" style="text-transform:capitalize" aria-describedby="newLocalityHelp" />
+                            <div class="input-group-append">
+                                <button id="addClubLocality" class="btn btn-success" type="button" disabled><span class="fa fa-plus"></span></button>
+                            </div>
+                            <div class="input-group-append">
+                                <button id="toListClubLocality" class="btn btn-outline-info" type="button"><span class="fa fa-times"></span></button>
+                            </div>
+                        </div>
+                        <small id="newLocalityHelp" class="form-text text-muted">
+                            *Введите название нового населённого пункта. Он добавится в выбранный регион.
+                        </small>
+                    </div>
+                </div>
+                <hr />
+                <div id="clubs" class="form-group">
+                    <div id="localities" class="form-group">
+                        <label asp-for="ClubId" class="control-label"></label>
+                        <div class="input-group">
+                            <select asp-for="ClubId"
+                                    id="clubList"
+                                    aria-describedby="clubHelp"
+                                    class="selectpicker form-control"
+                                    data-live-search="true"
+                                    data-size="6"
+                                    asp-items="@Model.Clubs">
+                                <option>- Спортивный Клуб -</option>
+                            </select>
+                            <div class="input-group-append">
+                                <button id="newClub" class="btn btn-secondary" type="button"><span class="fa fa-plus"></span></button>
+                            </div>
+                        </div>
+                        <span asp-validation-for="ClubId" class="text-danger"></span>
+                        <small id="clubHelp" class="form-text text-muted">
+                            *Выберите клуб из списка.Если нужного названия нет, Вы можете добавить его самостоятельно.
+                        </small>
+                    </div>
+                </div>
+                <div id="newClubForm" style="display:none">
+                    <div class="form-group">
+                        <label>Новый спортивный клуб</label>
+                        <div class="input-group">
+                            <input type="text" name="Club" id="club" class="form-control" style="text-transform:capitalize" aria-describedby="newLocalityHelp" />
+                            <div class="input-group-append">
+                                <button id="addClub" class="btn btn-success" type="button" disabled><span class="fa fa-plus"></span></button>
+                            </div>
+                            <div class="input-group-append">
+                                <button id="toListClub" class="btn btn-outline-info" type="button"><span class="fa fa-times"></span></button>
+                            </div>
+                        </div>
+                        <small id="newLocalityHelp" class="form-text text-muted">
+                            *Введите название нового спортивного клуба. Он добавится в выбранный населённый пункт.
+                        </small>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col">
+                        <a href="@Model.ReturnUrl" class="btn btn-secondary btn-block" role="button">Назад</a>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_BootstrapSelectScriptsPartial");
+    }
+<script>
+        $(document).ready(function () {
+
+            $('#submit').prop('disabled', true);
+
+            $(function () {
+                $('.selectpicker').selectpicker();
+            });
+
+            let form = $('#AjaxAntiForgeryForm');
+            let token = $('input[name="__RequestVerificationToken"]', form).val();
+
+            function refreshClubListLocality(clubRegionId) {
+                 $.ajax({
+                      type: 'GET',
+                     url: '/Locality/GetLocalitiesDropDownList/' + clubRegionId,
+                     success: function (data) {
+                         $('#newClubLocalityForm').hide();
+                         $('#clubLocalities').html(data);
+                         $('#clubLocalities').show();
+                      }
+                 });
+            }
+
+            function refreshListClubs(localityClubId) {
+                 $.ajax({
+                     type: 'GET',
+                     url: '/SportClub/GetSportClubsDropDownList/' + localityClubId,
+                     success: function (data) {
+                         $('#newClubForm').hide();
+                         $('#clubs').html(data);
+                         $('#clubs').show();
+                     }
+                 });
+            }
+
+            $(document).on('change', '#clubRegionList', function () {
+                let clubRegionId = $(this).val();
+                let clubLocalityId = 0;
+                refreshClubListLocality(clubRegionId);
+                refreshListClubs(clubRegionId, clubLocalityId);
+            });
+
+             $(document).on('change', '#clubLocalityList', function () {
+                 let localityId = $(this).val();
+                 if (localityId === 0) {
+                     $('#clubs').hide();
+                 }
+                 else {
+                     refreshListClubs(localityId);
+                 }
+             });
+
+            $(document).on('click', '#newClubLocality, #newLocality', function () {
+                $('#newClubLocalityForm').show();
+                $('#clubLocalities').hide();
+                $('#clubLocality').focus();
+                $('#clubLocality').keyup(function () {
+                     if ($(this).val().length > 0) {
+
+                        $('#addClubLocality').prop('disabled', false);
+                     }
+                     else {
+                        $('#addClubLocality').prop('disabled', true);
+                     }
+                });
+            });
+
+            $('#toListClubLocality').click(function () {
+                $('#newClubLocalityForm').hide();
+                $('#clubLocality').val('');
+                $('#addClubLocality').prop('disabled', true);
+                $('#clubLocalities').show();
+            });
+
+            $(document).on('change', '#clubList', function () {
+                let sportClub = $(this).val();
+                if (sportClub > 0) {
+                    $('#submit').prop('disabled', false);
+                }
+                else {
+                    $('#submit').prop('disabled', true);
+                }
+
+            });
+
+
+            $(document).on('click', '#newClub', function () {
+                $('#newClubForm').show();
+                $('#clubs').hide();
+                $('#club').focus();
+                $('#club').keyup(function () {
+                    if ($(this).val() != '') {
+                        $('#addClub').prop('disabled', false);
+                    }
+                    else {
+                        $('#addClub').prop('disabled', true);
+                    }
+                });
+            });
+
+             $('#toListClub').click(function () {
+                $('#newClubForm').hide();
+                $('#club').val('');
+                $('#addClub').prop('disabled', true);
+                $('#clubs').show();
+            });
+
+            $(document).on('click', '#addClubLocality', function () {
+                $('#newClubLocalityForm').hide();
+                $('#clubLocalities').show();
+                let clubLocality = $('#clubLocality').val();
+                let clubRegionId = $('#clubRegionList').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Locality/AddNewLocality/',
+                    dataType: 'json',
+                    data: { __RequestVerificationToken: token, RegionId: clubRegionId, Name: clubLocality },
+                    success: function (response) {
+                        alert(response.responseText);
+                        $('#clubLocality').val('');
+                        refreshClubListLocality(clubRegionId);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+
+            $(document).on('click', '#addClub', function () {
+                //let regionClubId = $('#clubRegionList').val();
+                let localityClubId = $('#clubLocalityList').val();
+                let club = $('#club').val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/SportClub/AddNewSportClub',
+                    dataType: 'json',
+                    data: { __RequestVerificationToken: token, /*id: regionClubId,*/ LocalityId: localityClubId, Name: club },
+                    success: function (response) {
+                        alert(response.responseText);
+                        refreshListClubs(localityClubId);
+                        $('#newClubForm').hide();
+                        $('#clubs').show();
+                        $('#club').val('');
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+
+
+</script>
+
+}

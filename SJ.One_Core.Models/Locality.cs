@@ -9,6 +9,6 @@ namespace SJ.One_Core.Models
         public Region Region { get; set; }
         public List<User> LocalityUsers { get; set; }
         public List<SportEvent> LocalitySportEvents { get; set; }
-        public List<SportClub> LocalitySportClubs { get; set; }
+        public List<SportClub> LocalitySportClubs { get; set; } = new List<SportClub>();
     }
 }

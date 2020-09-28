@@ -1,0 +1,27 @@
+﻿@model SJ.One_Core.Models.SportClubViewModels.SportClubsDropDownListViewModel
+
+<label asp-for="ClubId" class="control-label"></label>
+<div class="input-group">
+    <select asp-for="ClubId"
+            id="clubList"
+            aria-describedby="clubHelp"
+            class="selectpicker form-control"
+            data-live-search="true"
+            data-size="6"
+            asp-items="@Model.Clubs">
+        <option>- Спортивный Клуб -</option>
+    </select>
+    <div class="input-group-append">
+        <button id="newClub" class="btn btn-secondary" type="button"><span class="fa fa-plus"></span></button>
+    </div>
+</div>
+<span asp-validation-for="ClubId" class="text-danger"></span>
+<small id="clubHelp" class="form-text text-muted">
+    *Выберите клуб из списка.Если нужного названия нет, Вы можете добавить его самостоятельно.
+</small>
+
+<script>
+    $(function () {
+        $('.selectpicker').selectpicker();
+    });
+</script>

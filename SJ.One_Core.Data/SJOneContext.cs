@@ -10,7 +10,6 @@ namespace SJ.One_Core.Data
         internal SJOneContext()
         {
         }
-
         public DbSet<AutoTiming> AutoTimings { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Document> Documents { get; set; }
@@ -28,7 +27,7 @@ namespace SJ.One_Core.Data
         public SJOneContext(DbContextOptions<SJOneContext> options)
            : base(options)
         {
-            //Database.EnsureDeleted();
+            //Database.EnsureDeleted();            
             Database.EnsureCreated();
         }
 
