@@ -1,20 +1,20 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SJ.One_Core.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
-        [StringLength(50)]
         [Display(Name = "Email")]
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Введите Email")]
-        public string Email { get; set; }        
-                
+        [EmailAddress(ErrorMessage = "Введите корректный Email")]     
+        [StringLength(50, ErrorMessage = "Длина Email не должна превышать 50 символов")]
+        public string Email { get; set; }
+
         [Display(Name = "Пароль")]
         [DataType(DataType.Password)]
-        [StringLength(50, MinimumLength = 6, ErrorMessage = "Длина пароля должна быть от 6 до 20 символов")]
         [Required(ErrorMessage = "Введите пароль")]
+        [StringLength(50, MinimumLength = 6, ErrorMessage = "Длина пароля должна быть от 6 до 50 символов")]
         public string Password { get; set; }
 
         [StringLength(20)]

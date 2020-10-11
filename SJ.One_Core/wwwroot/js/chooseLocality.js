@@ -10,7 +10,7 @@
     function refreshListLocality(regionId) {
         $.ajax({
             type: 'GET',
-            url: '/Locality/GetLocalitiesDropDownList' + regionId,
+            url: '/Locality/GetLocalitiesDropDownList/' + regionId,
             success: function (data) {
                 $('#newLocalityForm').hide();
                 $('#localities').html(data);

@@ -212,7 +212,7 @@ namespace SJ.One_Core.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> СhooseLocality([Bind("Id, LocalityId", "Club")] LocalityViewModel localityModel)
+        public async Task<IActionResult> СhooseLocality(LocalityViewModel localityModel)
         {
             if (ModelState.IsValid && localityModel.LocalityId > 0)
             {
@@ -328,6 +328,29 @@ namespace SJ.One_Core.Controllers
                     "Invalid user or password");
             }
             return View(loginModel);
+        }
+
+        public async Task<IActionResult> UserInfo(string id, UserInfoViewModel userInfoModel)
+        {
+            User user = await userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                userInfoModel.Id = user.Id;
+                userInfoModel.Avatar = user.Avatar;
+                userInfoModel.Email = user.Email;
+                userInfoModel.FirstName = user.FirstName;
+                userInfoModel.Surname = user.Surname;
+                userInfoModel.Gender = user.Gender;
+                userInfoModel.DOB = user.DOB;
+                userInfoModel.Locality = localityRepository.GetOne(user.LocalityId).Name;
+                SportClub club = sportClubRepository.GetOne(user.SportClubId);
+                if (club !=null)
+                {
+                    userInfoModel.Club = club.Name;
+                }                
+                return View(userInfoModel);
+            }
+            return BadRequest();
         }
 
         [Authorize]
