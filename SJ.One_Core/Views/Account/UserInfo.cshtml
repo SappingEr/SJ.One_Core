@@ -3,7 +3,6 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-
 @{
     ViewData["Title"] = User.Identity.Name;
 }
@@ -21,7 +20,6 @@
         </div>
     </div>
 }
-
 else
 {
     <div class="row">
@@ -39,7 +37,6 @@ else
                 <a class="uploadView" asp-controller="Account" asp-action="UploadAvatar" asp-route-id="@Model.Id"><img src="~/files/pic/avatar.png" class="img-thumbnail" /></a>
             }
         </div>
-
         <div class="col-lg-6 mb-2">
             <div class="card">
                 <div class="card-body">
@@ -49,19 +46,19 @@ else
                     <hr />
                     <dl>
                         <dt>
-                            @Html.DisplayNameFor(model => model.Gender)
+                            <label asp-for="Gender"></label>
                         </dt>
                         <dd>
                             @Model.Gender.ToString()
                         </dd>
                         <dt>
-                            @Html.DisplayNameFor(model => model.Locality)
+                            <label asp-for="Locality"></label>
                         </dt>
                         <dd>
                             <a asp-controller="Account" asp-action="СhooseLocality" asp-route-id="@Model.Id">@Model.Locality</a>
                         </dd>
                         <dt>
-                            @Html.DisplayNameFor(model => model.Club)
+                            <label asp-for="Club"></label>
                         </dt>
                         <dd>
                             <a asp-controller="Account" asp-action="СhooseSportClub" asp-route-id="@Model.Id">@Model.Club</a>
@@ -71,7 +68,6 @@ else
                     <a asp-controller="Account" asp-action="ChangePassword" asp-route-id="@Model.Id">Сменить пароль</a>
                 </div>
             </div>
-
         </div>
 
         <div class="col-lg-3">
@@ -80,13 +76,13 @@ else
 
                     <dl>
                         <dt>
-                            @Html.DisplayNameFor(model => model.Email)
+                            <label asp-for="Email"></label>
                         </dt>
                         <dd>
                             @Html.DisplayFor(model => model.Email)
                         </dd>
                         <dt>
-                            @Html.DisplayNameFor(model => model.PhoneNumber)
+                            <label asp-for="PhoneNumber"></label>
                         </dt>
                         <dd>
                             <a asp-controller="Account" asp-action="PhoneNumber" asp-route-id="@Model.Id">@Model.PhoneNumber</a>

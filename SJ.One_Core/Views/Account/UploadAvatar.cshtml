@@ -1,0 +1,56 @@
+﻿@model SJ.One_Core.Models.AccountViewModels.AvatarViewModel
+
+@{
+    ViewData["Title"] = "UploadAvatar";
+}
+
+<div class="row">
+    <div class="col"></div>
+    <div class="card col-sm-7 col-md-6 col-lg-5 col-xl-4 mx-1">
+        <div class="card-body">
+            <h2 class="card-title text-center">Аватар</h2>
+            <hr />
+            @if (Model.Delete == true)
+            {
+                <div class="form-group">
+                    <p>
+                        Удалить изображение
+                        <a asp-controller="Account" asp-action="DeleteAvatar" asp-route-id="@Model.Id" style="color:red">
+                            <span class="fa fa-trash-alt"></span>
+                        </a>
+                    </p>
+                    
+                </div>
+            }
+            <hr />
+            <form asp-action="UploadAvatar" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="Id" type="hidden" value="@Model.Id" />
+                <div class="form-group">
+                    <div>
+                        <label class="btn btn-default">
+                            <input asp-for="Avatar" tupe="file" accept=".jpg" />
+                        </label>
+                    </div>
+                    <p>*Поддерживаемый формат: .jpg</p>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col">
+                        <a class="btn btn-secondary btn-block" asp-controller="Account" asp-action="UserInfo" asp-route-id="@Model.Id">
+                            Отмена
+                        </a>
+                    </div>
+                    <div class="col">
+                        <input type="submit" value="Сохранить" class="btn btn-success btn-block" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col"></div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

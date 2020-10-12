@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -6,6 +7,7 @@ using SJ.One_Core.Data.Repositories;
 using SJ.One_Core.Models;
 using SJ.One_Core.Models.AccountViewModels;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -230,7 +232,7 @@ namespace SJ.One_Core.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Info", new { localityModel.Id });
+                            return RedirectToAction("UserInfo", new { localityModel.Id });
                         }
                     }
                 }
@@ -322,12 +324,51 @@ namespace SJ.One_Core.Controllers
                             return Redirect(loginModel.ReturnUrl ?? "/");
                         }
                     }
-
                 }
                 ModelState.AddModelError(nameof(LoginViewModel.Email),
-                    "Invalid user or password");
+                    "Неправильное имя пользователя или пароль");
             }
             return View(loginModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UploadAvatar(string id)
+        {
+            User user = await userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                AvatarViewModel avatarModel = new AvatarViewModel { Id = id };
+                if (user.Avatar != null)
+                {
+                    avatarModel.Delete = true;
+                }
+                return View(avatarModel);
+            }
+            return BadRequest();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadAvatar(AvatarViewModel avatarModel)
+        {
+            if (ModelState.IsValid && avatarModel.Avatar != null)
+            {
+                User user = await userManager.FindByIdAsync(avatarModel.Id);
+                byte[] avatarData = null;
+                using(BinaryReader binaryReader = new BinaryReader(avatarModel.Avatar.OpenReadStream()))
+                {
+                    avatarData = binaryReader.ReadBytes((int)avatarModel.Avatar.Length);
+                }
+                user.Avatar = avatarData;
+                IdentityResult result = await userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("UserInfo", new { avatarModel.Id });
+                }
+                ModelState.AddModelError("", "Не удалось сохранить изменения");
+                return View(avatarModel);
+            }
+            ModelState.AddModelError("", "Выберите файл!");
+            return View(avatarModel);
         }
 
         public async Task<IActionResult> UserInfo(string id, UserInfoViewModel userInfoModel)

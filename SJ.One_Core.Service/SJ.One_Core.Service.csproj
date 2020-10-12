@@ -1,37 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="obj\Debug\netstandard2.0\.NETStandard,Version=v2.0.AssemblyAttributes.cs" />
-    <Compile Include="obj\Debug\netstandard2.0\SJ.One_Core.Service.AssemblyInfo.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="bin\Debug\netstandard2.0\SJ.One_Core.Service.deps.json" />
-    <Content Include="obj\Debug\netstandard2.0\SJ.One_Core.Service.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\project.assets.json" />
-    <Content Include="obj\SJ.One_Core.Service.csproj.nuget.dgspec.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ServiceInterfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="bin\Debug\netstandard2.0\SJ.One_Core.Service.dll" />
-    <None Include="bin\Debug\netstandard2.0\SJ.One_Core.Service.pdb" />
-    <None Include="obj\Debug\netstandard2.0\SJ.One_Core.Service.AssemblyInfoInputs.cache" />
-    <None Include="obj\Debug\netstandard2.0\SJ.One_Core.Service.assets.cache" />
-    <None Include="obj\Debug\netstandard2.0\SJ.One_Core.Service.csproj.CoreCompileInputs.cache" />
-    <None Include="obj\Debug\netstandard2.0\SJ.One_Core.Service.csprojAssemblyReference.cache" />
-    <None Include="obj\Debug\netstandard2.0\SJ.One_Core.Service.dll" />
-    <None Include="obj\Debug\netstandard2.0\SJ.One_Core.Service.pdb" />
-    <None Include="obj\project.nuget.cache" />
-    <None Include="obj\SJ.One_Core.Service.csproj.nuget.g.props" />
-    <None Include="obj\SJ.One_Core.Service.csproj.nuget.g.targets" />
-  </ItemGroup>
 
 </Project>
