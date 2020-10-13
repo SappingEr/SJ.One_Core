@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.WebEncoders;
 using SJ.One_Core.Data;
+using SJ.One_Core.Data.Auth;
 using SJ.One_Core.Data.Repositories;
 using SJ.One_Core.Models;
 using System.Text.Encodings.Web;
@@ -25,7 +26,7 @@ namespace SJ.One_Core
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
+        {
             services.AddDbContext<SJOneContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                providerOptions => providerOptions.EnableRetryOnFailure()));
@@ -33,12 +34,14 @@ namespace SJ.One_Core
             services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 6;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireDigit = true;
             })
+                .AddErrorDescriber<RuCustomIdentityErrorDescriber>()
                 .AddEntityFrameworkStores<SJOneContext>();
+
 
             services.Configure<WebEncoderOptions>(options =>
             {

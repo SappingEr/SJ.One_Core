@@ -371,6 +371,7 @@ namespace SJ.One_Core.Controllers
             return View(avatarModel);
         }
 
+        [HttpGet]
         public async Task<IActionResult> DeleteAvatar(string id)
         {
             User user = await userManager.FindByIdAsync(id);
@@ -384,6 +385,37 @@ namespace SJ.One_Core.Controllers
             return RedirectToAction("UploadAvatar", new { id });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ChangePassword(string id)
+        {
+            User user = await userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                return View(new ChangePasswordViewModel { Id = id });
+            }
+            return BadRequest();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel passwordModel)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await userManager.FindByIdAsync(passwordModel.Id);
+
+                var changePass = userManager.ChangePasswordAsync(user, passwordModel.Password, passwordModel.NewPassword);
+                if (changePass.Result.Succeeded)
+                {
+                    return RedirectToAction("Info", new { passwordModel.Id });
+                }
+
+                ModelState.AddModelError("", "Произошла ошибка при смене пароля. Попробуйте ещё раз.");
+                return View(passwordModel);
+            }
+            return View(passwordModel);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> UserInfo(string id, UserInfoViewModel userInfoModel)
         {
             User user = await userManager.FindByIdAsync(id);
@@ -406,6 +438,8 @@ namespace SJ.One_Core.Controllers
             }
             return BadRequest();
         }
+
+
 
         [Authorize]
         public async Task<IActionResult> Logout()

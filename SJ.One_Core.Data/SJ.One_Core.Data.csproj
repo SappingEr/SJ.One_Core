@@ -8,8 +8,4 @@
     <ProjectReference Include="..\SJ.One_Core.Models\SJ.One_Core.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Auth\" />
-  </ItemGroup>
-
 </Project>
