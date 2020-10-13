@@ -264,11 +264,11 @@ namespace SJ.One_Core.Controllers
 
                 model.ClubRegions = regionRepository.GetAll()
                    .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Name, Selected = model.ClubRegionId.Equals(regionId) });
-                
-                model.ClubLocalities = localityRepository.GetSome(l=>l.RegionId == regionId)
+
+                model.ClubLocalities = localityRepository.GetSome(l => l.RegionId == regionId)
                    .Select(i => new SelectListItem { Value = i.Id.ToString(), Text = i.Name, Selected = model.ClubLocalityId.Equals(localityId) });
 
-                model.Clubs = sportClubRepository.GetSome(c =>c.LocalityId == localityId)
+                model.Clubs = sportClubRepository.GetSome(c => c.LocalityId == localityId)
                     .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name });
 
                 return View(model);
@@ -354,7 +354,7 @@ namespace SJ.One_Core.Controllers
             {
                 User user = await userManager.FindByIdAsync(avatarModel.Id);
                 byte[] avatarData = null;
-                using(BinaryReader binaryReader = new BinaryReader(avatarModel.Avatar.OpenReadStream()))
+                using (BinaryReader binaryReader = new BinaryReader(avatarModel.Avatar.OpenReadStream()))
                 {
                     avatarData = binaryReader.ReadBytes((int)avatarModel.Avatar.Length);
                 }
@@ -371,6 +371,19 @@ namespace SJ.One_Core.Controllers
             return View(avatarModel);
         }
 
+        public async Task<IActionResult> DeleteAvatar(string id)
+        {
+            User user = await userManager.FindByIdAsync(id);
+            if (user != null && user.Avatar != null)
+            {
+                user.Avatar = null;
+                await userManager.UpdateAsync(user);
+                return RedirectToAction("UserInfo", new { id });
+            }
+            TempData["errMessage"] = "Не удалось удалить аватар";
+            return RedirectToAction("UploadAvatar", new { id });
+        }
+
         public async Task<IActionResult> UserInfo(string id, UserInfoViewModel userInfoModel)
         {
             User user = await userManager.FindByIdAsync(id);
@@ -385,10 +398,10 @@ namespace SJ.One_Core.Controllers
                 userInfoModel.DOB = user.DOB;
                 userInfoModel.Locality = localityRepository.GetOne(user.LocalityId).Name;
                 SportClub club = sportClubRepository.GetOne(user.SportClubId);
-                if (club !=null)
+                if (club != null)
                 {
                     userInfoModel.Club = club.Name;
-                }                
+                }
                 return View(userInfoModel);
             }
             return BadRequest();

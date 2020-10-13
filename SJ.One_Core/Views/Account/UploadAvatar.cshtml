@@ -3,26 +3,13 @@
 @{
     ViewData["Title"] = "UploadAvatar";
 }
-
 <div class="row">
     <div class="col"></div>
     <div class="card col-sm-7 col-md-6 col-lg-5 col-xl-4 mx-1">
         <div class="card-body">
             <h2 class="card-title text-center">Аватар</h2>
             <hr />
-            @if (Model.Delete == true)
-            {
-                <div class="form-group">
-                    <p>
-                        Удалить изображение
-                        <a asp-controller="Account" asp-action="DeleteAvatar" asp-route-id="@Model.Id" style="color:red">
-                            <span class="fa fa-trash-alt"></span>
-                        </a>
-                    </p>
-                    
-                </div>
-            }
-            <hr />
+            <p style="color:red">@TempData["errMessage"]</p>
             <form asp-action="UploadAvatar" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input asp-for="Id" type="hidden" value="@Model.Id" />
@@ -34,6 +21,18 @@
                     </div>
                     <p>*Поддерживаемый формат: .jpg</p>
                 </div>
+                @if (Model.Delete == true)
+                {
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col-4 form-group">
+                            <button id="delAvatar" type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#delAvatarModal">
+                                <span class="fa fa-trash-alt"></span>
+                            </button>                            
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                }
                 <hr />
                 <div class="row">
                     <div class="col">
@@ -49,6 +48,27 @@
         </div>
     </div>
     <div class="col"></div>
+</div>
+
+<div class="modal fade" id="delAvatarModal">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Удалить аватар?</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <a class="btn btn-danger btn-block" role="button" asp-controller="Account" asp-action="DeleteAvatar" asp-route-id="@Model.Id">Удалить</a>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-success btn-block" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {

@@ -1,5 +1,6 @@
 ﻿@model SJ.One_Core.Models.AccountViewModels.UserInfoViewModel
 @using Microsoft.AspNetCore.Identity
+@using SJ.One_Core.Service.HtmlExtensions
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
@@ -49,7 +50,7 @@ else
                             <label asp-for="Gender"></label>
                         </dt>
                         <dd>
-                            @Model.Gender.ToString()
+                            @Model.Gender.DisplayName()
                         </dd>
                         <dt>
                             <label asp-for="Locality"></label>
