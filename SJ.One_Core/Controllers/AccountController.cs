@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -62,7 +61,7 @@ namespace SJ.One_Core.Controllers
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, false);
-                    return RedirectToAction("СhooseUserGender", "Account", new { user.Id });
+                    return RedirectToAction("UserInfo", "Account", new { user.Id });
                 }
                 else
                 {
@@ -100,7 +99,7 @@ namespace SJ.One_Core.Controllers
                     {
                         if (!string.IsNullOrWhiteSpace(user.FullName))
                         {
-                            return RedirectToAction("Info", "Account", new { genderModel.Id });
+                            return RedirectToAction("UserInfo", "Account", new { genderModel.Id });
                         }
                         return RedirectToAction("UpdUserData", "Account", new { id = genderModel.Id, });
                     }
@@ -123,7 +122,7 @@ namespace SJ.One_Core.Controllers
                 {
                     ReturnUrl = Request.Headers["Referer"].ToString()
                 };
-                if (!string.IsNullOrWhiteSpace(user.FullName) && !user.DOB.HasValue)
+                if (!string.IsNullOrWhiteSpace(user.FullName) && user.DOB.HasValue)
                 {
                     dataModel.Id = id;
                     dataModel.FirstName = user.FirstName;
@@ -285,7 +284,7 @@ namespace SJ.One_Core.Controllers
                 SportClub sportClub = sportClubRepository.GetOne(clubModel.ClubId);
                 sportClub.SportClubUsers.Add(user);
                 sportClubRepository.Update(sportClub);
-                return RedirectToAction("Info", new { clubModel.Id });
+                return RedirectToAction("UserInfo", new { clubModel.Id });
             }
             return View(clubModel);
         }
@@ -402,15 +401,13 @@ namespace SJ.One_Core.Controllers
             if (ModelState.IsValid)
             {
                 User user = await userManager.FindByIdAsync(passwordModel.Id);
-
                 var changePass = userManager.ChangePasswordAsync(user, passwordModel.Password, passwordModel.NewPassword);
                 if (changePass.Result.Succeeded)
                 {
-                    return RedirectToAction("Info", new { passwordModel.Id });
+                    await signInManager.SignOutAsync();
+                    return RedirectToAction("Login");
                 }
-
-                ModelState.AddModelError("", "Произошла ошибка при смене пароля. Попробуйте ещё раз.");
-                return View(passwordModel);
+                ModelState.AddModelError("", "Ошибка смены пароля. Попробуйте ещё раз.");
             }
             return View(passwordModel);
         }
@@ -428,7 +425,11 @@ namespace SJ.One_Core.Controllers
                 userInfoModel.Surname = user.Surname;
                 userInfoModel.Gender = user.Gender;
                 userInfoModel.DOB = user.DOB;
-                userInfoModel.Locality = localityRepository.GetOne(user.LocalityId).Name;
+                Locality locality = localityRepository.GetOne(user.LocalityId);
+                if (locality != null)
+                {
+                    userInfoModel.Locality = locality.Name;
+                }
                 SportClub club = sportClubRepository.GetOne(user.SportClubId);
                 if (club != null)
                 {
@@ -439,7 +440,39 @@ namespace SJ.One_Core.Controllers
             return BadRequest();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            User user = await userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                return View(new DeleteUserViewModel { Id = id });
+            }
+            return BadRequest();
+        }
 
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUser(DeleteUserViewModel deleteUserModel)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await userManager.FindByIdAsync(deleteUserModel.Id);
+                var checkPassword = userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, deleteUserModel.Password).ToString();
+                if (checkPassword == "Success")
+                {
+                    var deleteResult = await userManager.DeleteAsync(user);
+                    if (deleteResult.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    ModelState.AddModelError("", "Не удалось удалить учётную запись. Попробуйте ещё раз");
+                    return View(deleteUserModel);
+                }
+                ModelState.AddModelError("", "Неверный пароль");
+                return View(deleteUserModel);
+            }
+            return View(deleteUserModel);
+        }
 
         [Authorize]
         public async Task<IActionResult> Logout()

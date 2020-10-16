@@ -17,7 +17,7 @@
                     <input asp-for="Email" class="form-control" aria-describedby="loginHelp" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                     <small id="loginHelp" class="form-text text-muted" style="display:none">
-                        *Укажите Ваш Email.
+                        *Ввдите Ваш Email.
                     </small>
                 </div>
                 <div class="form-group">
@@ -25,13 +25,16 @@
                     <input asp-for="Password" class="form-control" aria-describedby="passwordHelp" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                     <small id="passwordHelp" class="form-text text-muted" style="display:none">
-                        *Длина пароля должна быть от 8 до 50 знаков, может включать цифры, буквы и символы
+                        *Длина пароля должна быть от 8 до 50 знаков, включать цифры, буквы и символы.
                     </small>
                 </div>
                 <div class="form-group">
                     <label asp-for="ConfirmPassword" class="control-label" style="display:none"></label>
-                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <input asp-for="ConfirmPassword" class="form-control" aria-describedby="confirmPasswordHelp" />
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    <small id="passwordHelp" class="form-text text-muted" style="display:none">
+                        *Введите пароль повторно.
+                    </small>
                 </div>
                 <hr />
                 <div class="row">

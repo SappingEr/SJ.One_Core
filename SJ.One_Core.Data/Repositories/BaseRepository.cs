@@ -9,7 +9,7 @@ namespace SJ.One_Core.Data.Repositories
 {
     public class BaseRepository<T> : IDisposable, IRepository<T>
         where T : class
-    {        
+    {
         protected SJOneContext Context { get; }
         private readonly DbSet<T> dbset;
 
@@ -46,12 +46,11 @@ namespace SJ.One_Core.Data.Repositories
         public virtual List<T> GetAll() => dbset.ToList();
 
         public List<T> GetAll<TSortField>(Expression<Func<T, TSortField>> orderBy, bool ascending)
-        {
-            throw new NotImplementedException();
-        }
+            => (ascending ? dbset.OrderBy(orderBy) : dbset.OrderByDescending(orderBy)).ToList();
+
         public T GetOne(int? id) => dbset.Find(id);
 
-        public List<T> GetSome(Expression<Func<T, bool>> where) => dbset.Where(where).ToList();        
+        public List<T> GetSome(Expression<Func<T, bool>> where) => dbset.Where(where).ToList();
 
         public int Update(T entity)
         {
@@ -64,6 +63,8 @@ namespace SJ.One_Core.Data.Repositories
             dbset.UpdateRange(entities);
             return SaveChanges();
         }
+
+
 
         internal int SaveChanges()
         {

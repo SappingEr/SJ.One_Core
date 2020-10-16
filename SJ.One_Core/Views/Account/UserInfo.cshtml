@@ -1,6 +1,6 @@
 ﻿@model SJ.One_Core.Models.AccountViewModels.UserInfoViewModel
 @using Microsoft.AspNetCore.Identity
-@using SJ.One_Core.Service.HtmlExtensions
+@using SJ.One_Core.HtmlExtensions
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
@@ -11,10 +11,15 @@
 @if (Model.EmptyProp == true)
 {
     <div class="jumbotron col-lg-8 mx-auto bg-warning">
-        <h1>Ваша карточка не заполнена</h1>
-        <p>Данные нужны для регистрации на спортивные мероприятия и получения дополнительных услуг.</p>
+        <div class="text-center">
+            <h1>Вы зарегистрированы,</h1>
+            <h3>но ваша личная карточка не заполнена</h3>
+        </div>  
+        <hr />
+        <p>Данные нужны для регистрации на спортивные мероприятия, отображения результатов и получения дополнительных услуг.</p>
+        <br />
         <div class="d-flex justify-content-center">
-            <a class="btn btn-secondary" asp-controller="Account" asp-action="СhooseUserGender" asp-route-id="@Model.Id">
+            <a class="btn btn-primary" asp-controller="Account" asp-action="СhooseUserGender" asp-route-id="@Model.Id">
                 Заполнить
                 <span class="fa fa-pencil-alt"></span>
             </a>
@@ -115,7 +120,7 @@ else
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Удалить учётную запись?</h4>
+                <h4 class="modal-title">Вы хотите далить учётную запись?</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">

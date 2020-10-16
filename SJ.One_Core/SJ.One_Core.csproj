@@ -21,4 +21,9 @@
     <ProjectReference Include="..\SJ.One_Core.Service\SJ.One_Core.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ModelsAttributes\" />
+    <Folder Include="Paging\" />
+  </ItemGroup>
+
 </Project>

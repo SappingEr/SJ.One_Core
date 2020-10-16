@@ -1,0 +1,43 @@
+﻿@model SJ.One_Core.Models.AccountViewModels.DeleteUserViewModel
+
+@{
+    ViewData["Title"] = "Удаление аккаунта";
+}
+
+<div class="row">
+    <div class="col"></div>
+    <div class="card col-sm-7 col-md-6 col-lg-5 col-xl-4 mx-1">
+        <div class="card-body">
+            <h2 class="card-title text-center">Удаление аккаунта</h2>
+            <hr />
+            <form asp-action="DeleteUser">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="Id" class="form-control" type="hidden" />
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" aria-describedby="passwordHelp" autofocus />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <small id="passwordHelp" class="form-text text-muted">
+                        *Введите пароль для подтверждения.
+                    </small>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col mb-2">
+                        <a class="btn btn-secondary btn-block" asp-controller="Account" asp-action="UserInfo" asp-route-id="@Model.Id">
+                            Отмена
+                        </a>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-danger btn-block">Удалить <i class="fa fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>      
+    </div>
+    <div class="col"></div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
