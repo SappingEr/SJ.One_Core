@@ -5,13 +5,11 @@ using System.Globalization;
 
 namespace SJ.One_Core.Models.AccountViewModels
 {
-    public class UserDataViewModel: IValidatableObject
+    public class UserDataViewModel: BaseEntityViewModel, IValidatableObject
     {
         private readonly TextInfo textInfo = new CultureInfo("ru-RU").TextInfo;
         private string firstName;
         private string surname;
-
-        public string Id { get; set; }
 
         public string ReturnUrl { get; set; }
 

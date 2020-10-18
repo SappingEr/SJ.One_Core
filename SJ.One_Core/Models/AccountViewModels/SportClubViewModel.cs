@@ -5,10 +5,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SJ.One_Core.Models.AccountViewModels
 {
-    public class SportClubViewModel
+    public class SportClubViewModel : BaseEntityViewModel
     {
-        public string Id { get; set; }
-
         public string ReturnUrl { get; set; }
 
         [Required]

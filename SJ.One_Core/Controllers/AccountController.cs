@@ -75,9 +75,9 @@ namespace SJ.One_Core.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> СhooseUserGender(string id)
+        public async Task<IActionResult> СhooseUserGender(int id)
         {
-            User user = await userManager.FindByIdAsync(id);
+            User user = await userManager.FindByIdAsync(id.ToString());
             if (user != null)
             {
                 return View(new UserGenderViewModel { Id = id });
@@ -90,7 +90,7 @@ namespace SJ.One_Core.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await userManager.FindByIdAsync(genderModel.Id);
+                User user = await userManager.FindByIdAsync(genderModel.Id.ToString());
                 if (user != null)
                 {
                     user.Gender = genderModel.Gender;
@@ -113,9 +113,9 @@ namespace SJ.One_Core.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> UpdUserData(string id)
+        public async Task<IActionResult> UpdUserData(int id)
         {
-            User user = await userManager.FindByIdAsync(id);
+            User user = await userManager.FindByIdAsync(id.ToString());
             if (user != null)
             {
                 UserDataViewModel dataModel = new UserDataViewModel
@@ -143,7 +143,7 @@ namespace SJ.One_Core.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await userManager.FindByIdAsync(dataModel.Id);
+                User user = await userManager.FindByIdAsync(dataModel.Id.ToString());
                 if (user != null)
                 {
                     user.FirstName = dataModel.FirstName;
@@ -170,9 +170,9 @@ namespace SJ.One_Core.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> СhooseLocality(string id)
+        public async Task<IActionResult> СhooseLocality(int id)
         {
-            User user = await userManager.FindByIdAsync(id);
+            User user = await userManager.FindByIdAsync(id.ToString());
             if (user != null)
             {
                 LocalityViewModel localityModel = new LocalityViewModel
@@ -217,7 +217,7 @@ namespace SJ.One_Core.Controllers
         {
             if (ModelState.IsValid && localityModel.LocalityId > 0)
             {
-                User user = await userManager.FindByIdAsync(localityModel.Id);
+                User user = await userManager.FindByIdAsync(localityModel.Id.ToString());
                 Locality locality = localityRepository.GetOne(localityModel.LocalityId);
                 if (locality != null)
                 {
@@ -242,9 +242,9 @@ namespace SJ.One_Core.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> СhooseSportClub(string id)
+        public async Task<ActionResult> СhooseSportClub(int id)
         {
-            User user = await userManager.FindByIdAsync(id);
+            User user = await userManager.FindByIdAsync(id.ToString());
             Locality locality = localityRepository.GetOne(user.LocalityId);
             if (user != null && locality != null)
             {
@@ -280,7 +280,7 @@ namespace SJ.One_Core.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await userManager.FindByIdAsync(clubModel.Id);
+                User user = await userManager.FindByIdAsync(clubModel.Id.ToString());
                 SportClub sportClub = sportClubRepository.GetOne(clubModel.ClubId);
                 sportClub.SportClubUsers.Add(user);
                 sportClubRepository.Update(sportClub);
@@ -331,9 +331,9 @@ namespace SJ.One_Core.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UploadAvatar(string id)
+        public async Task<IActionResult> UploadAvatar(int id)
         {
-            User user = await userManager.FindByIdAsync(id);
+            User user = await userManager.FindByIdAsync(id.ToString());
             if (user != null)
             {
                 AvatarViewModel avatarModel = new AvatarViewModel { Id = id };
@@ -351,7 +351,7 @@ namespace SJ.One_Core.Controllers
         {
             if (ModelState.IsValid && avatarModel.Avatar != null)
             {
-                User user = await userManager.FindByIdAsync(avatarModel.Id);
+                User user = await userManager.FindByIdAsync(avatarModel.Id.ToString());
                 byte[] avatarData = null;
                 using (BinaryReader binaryReader = new BinaryReader(avatarModel.Avatar.OpenReadStream()))
                 {
@@ -371,9 +371,9 @@ namespace SJ.One_Core.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteAvatar(string id)
+        public async Task<IActionResult> DeleteAvatar(int id)
         {
-            User user = await userManager.FindByIdAsync(id);
+            User user = await userManager.FindByIdAsync(id.ToString());
             if (user != null && user.Avatar != null)
             {
                 user.Avatar = null;
@@ -385,9 +385,9 @@ namespace SJ.One_Core.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ChangePassword(string id)
+        public async Task<IActionResult> ChangePassword(int id)
         {
-            User user = await userManager.FindByIdAsync(id);
+            User user = await userManager.FindByIdAsync(id.ToString());
             if (user != null)
             {
                 return View(new ChangePasswordViewModel { Id = id });
@@ -400,7 +400,7 @@ namespace SJ.One_Core.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await userManager.FindByIdAsync(passwordModel.Id);
+                User user = await userManager.FindByIdAsync(passwordModel.Id.ToString());
                 var changePass = userManager.ChangePasswordAsync(user, passwordModel.Password, passwordModel.NewPassword);
                 if (changePass.Result.Succeeded)
                 {
@@ -413,9 +413,9 @@ namespace SJ.One_Core.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UserInfo(string id, UserInfoViewModel userInfoModel)
+        public async Task<IActionResult> UserInfo(int id, UserInfoViewModel userInfoModel)
         {
-            User user = await userManager.FindByIdAsync(id);
+            User user = await userManager.FindByIdAsync(id.ToString());
             if (user != null)
             {
                 userInfoModel.Id = user.Id;
@@ -441,9 +441,9 @@ namespace SJ.One_Core.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteUser(string id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            User user = await userManager.FindByIdAsync(id);
+            User user = await userManager.FindByIdAsync(id.ToString());
             if (user != null)
             {
                 return View(new DeleteUserViewModel { Id = id });
@@ -456,7 +456,7 @@ namespace SJ.One_Core.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await userManager.FindByIdAsync(deleteUserModel.Id);
+                User user = await userManager.FindByIdAsync(deleteUserModel.Id.ToString());
                 var checkPassword = userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, deleteUserModel.Password).ToString();
                 if (checkPassword == "Success")
                 {

@@ -1,6 +1,6 @@
 ﻿namespace SJ.One_Core.Data.Search
 {
-    public abstract class BaseSearch
+    public class FastSearch
     {
         public string SearchString { get; set; }
     }

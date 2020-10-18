@@ -14,9 +14,9 @@ namespace SJ.One_Core.Data.Config
             builder.Property(r => r.LapCount).HasMaxLength(5);
             builder.Property(r => r.CountdownTime).HasMaxLength(10);
             builder.HasOne(r => r.MainJudgeRace).WithMany(u => u.MainJudgeRaces)
-                .HasForeignKey(i => i.MainJudgeRaceId);
+                .HasForeignKey(i => i.MainJudgeRaceId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(r => r.SportEvent).WithMany(e => e.RacesEvent)
-                .HasForeignKey(i => i.SportEventId);
+                .HasForeignKey(i => i.SportEventId).OnDelete(DeleteBehavior.Cascade); ;
         }
     }
 }

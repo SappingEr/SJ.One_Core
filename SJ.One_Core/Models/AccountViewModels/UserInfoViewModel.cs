@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SJ.One_Core.Models.AccountViewModels
 {
-    public class UserInfoViewModel
+    public class UserInfoViewModel: BaseEntityViewModel
     {    
-        public string Id { get; set; }
         public byte[] Avatar { get; set; }
         public string FirstName { get; set; }
         public string Surname { get; set; }

@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace SJ.One_Core.Models.AccountViewModels
 {
-    public class LocalityViewModel
+    public class LocalityViewModel: BaseEntityViewModel
     {
-        public string Id { get; set; }
-
         public string ReturnUrl { get; set; }
 
         [Required]

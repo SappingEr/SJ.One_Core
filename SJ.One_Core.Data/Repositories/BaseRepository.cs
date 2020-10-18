@@ -43,6 +43,7 @@ namespace SJ.One_Core.Data.Repositories
         {
             Context?.Dispose();
         }
+
         public virtual List<T> GetAll() => dbset.ToList();
 
         public List<T> GetAll<TSortField>(Expression<Func<T, TSortField>> orderBy, bool ascending)
@@ -63,6 +64,11 @@ namespace SJ.One_Core.Data.Repositories
             dbset.UpdateRange(entities);
             return SaveChanges();
         }
+
+        public List<T> ExecuteQuery(string sql) => dbset.FromSqlRaw(sql).ToList();
+
+        public List<T> ExecuteQuery(string sql, object[] sqlParametersObjects)
+            => dbset.FromSqlRaw(sql, sqlParametersObjects).ToList();
 
 
 

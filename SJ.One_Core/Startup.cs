@@ -7,9 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.WebEncoders;
 using SJ.One_Core.Data;
-using SJ.One_Core.Data.Auth;
 using SJ.One_Core.Data.Repositories;
 using SJ.One_Core.Models;
+using SJ.One_Core.Service.Auth;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 
@@ -31,7 +31,7 @@ namespace SJ.One_Core
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                providerOptions => providerOptions.EnableRetryOnFailure()));
 
-            services.AddIdentity<User, IdentityRole>(options =>
+            services.AddIdentity<User, IdentityRole<int>>(options =>
             {
                 options.Password.RequiredLength = 6;
                 options.Password.RequireNonAlphanumeric = true;
@@ -67,7 +67,7 @@ namespace SJ.One_Core
             services.AddScoped<IUserRepository, UserRepository>();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+            UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager)
         {
             if (env.IsDevelopment())
             {

@@ -17,7 +17,7 @@ namespace SJ.One_Core.Models
         public DateTime? StartTime { get; set; }
         [DataType(DataType.Time)]
         public DateTime? FinishTime { get; set; }
-        public string MainJudgeRaceId { get; set; }
+        public int MainJudgeRaceId { get; set; }
         public User MainJudgeRace { get; set; }
         public bool AgeFromEvent { get; set; }
         public List<AgeGroup_Race> AgeGroups { get; set; }

@@ -10,13 +10,13 @@ namespace SJ.One_Core.Data.Config
         {
             builder.Property(e => e.Number).HasMaxLength(6);
             builder.HasOne(j => j.Judge).WithMany(n => n.StartNumbersJudge)
-                .HasForeignKey(i => i.JudgeId);
+                .HasForeignKey(i => i.JudgeId).OnDelete(DeleteBehavior.ClientSetNull); 
 
             builder.HasOne(u => u.User).WithMany(n => n.StartNumbersUser)
-                .HasForeignKey(i => i.UserId);
+                .HasForeignKey(i => i.UserId).OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasOne(r => r.Race).WithMany(n => n.StartNumbersRace)
-                .HasForeignKey(i => i.RaceId);
+                .HasForeignKey(i => i.RaceId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

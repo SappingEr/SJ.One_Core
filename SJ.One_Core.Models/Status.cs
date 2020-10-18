@@ -4,7 +4,7 @@ namespace SJ.One_Core.Models
 {
     public enum Status
     {
-        [Display(Name = "Активен")]
+        [Display(Name = "Активный")]
         Active,
         [Display(Name = "Заблокирован")]
         Blocked

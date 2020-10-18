@@ -2,10 +2,8 @@
 
 namespace SJ.One_Core.Models.AccountViewModels
 {
-    public class UserGenderViewModel
+    public class UserGenderViewModel: BaseEntityViewModel
     {
-        public string Id { get; set; }
-
         public string ReturnUrl { get; set; }
 
         [Display(Name = "Пол")]

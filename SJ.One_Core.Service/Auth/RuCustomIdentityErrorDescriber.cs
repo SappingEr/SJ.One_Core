@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace SJ.One_Core.Data.Auth
+namespace SJ.One_Core.Service.Auth
 {
     public class RuCustomIdentityErrorDescriber : IdentityErrorDescriber
     {

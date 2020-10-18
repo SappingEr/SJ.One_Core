@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SJ.One_Core.Data.Config;
 using SJ.One_Core.Models;
 
 namespace SJ.One_Core.Data
 {
-    public class SJOneContext : IdentityDbContext<User>
+    public class SJOneContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         internal SJOneContext()
         {
@@ -27,7 +28,7 @@ namespace SJ.One_Core.Data
         public SJOneContext(DbContextOptions<SJOneContext> options)
            : base(options)
         {
-            //Database.EnsureDeleted();            
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

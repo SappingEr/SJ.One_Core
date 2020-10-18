@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SJ.One_Core.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SJ.One_Core.Data
 {
     public class InitialData
     {
-        public static async Task InitializeAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task InitializeAsync(UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager)
         {
             string username = "admin";
             string email = "adm@sjone.com";
@@ -21,7 +22,7 @@ namespace SJ.One_Core.Data
                 {
                     if (await roleManager.FindByNameAsync(role) == null)
                     {
-                        await roleManager.CreateAsync(new IdentityRole(role));
+                        await roleManager.CreateAsync(new IdentityRole<int>(role));
                     }
                 }
 

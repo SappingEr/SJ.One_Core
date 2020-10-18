@@ -2,10 +2,8 @@
 
 namespace SJ.One_Core.Models.AccountViewModels
 {
-    public class DeleteUserViewModel
+    public class DeleteUserViewModel: BaseEntityViewModel
     {
-        public string Id { get; set; }
-
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
         [Required(ErrorMessage = "Введите пароль!")]

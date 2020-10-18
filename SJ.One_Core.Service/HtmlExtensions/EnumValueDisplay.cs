@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace SJ.One_Core.HtmlExtensions
+namespace SJ.One_Core.Service.HtmlExtensions
 {
     public static class EnumValueDisplay
     {

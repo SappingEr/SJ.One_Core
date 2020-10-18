@@ -12,7 +12,7 @@ namespace SJ.One_Core.Models
         public TimeSpan? TotalTime { get; set; }
         public DateTime? TimeStamp { get; set; }
         public StartNumber StartNumber { get; set; }
-        public string JudgeId { get; set; }
+        public int JudgeId { get; set; }
         public User Judge { get; set; }
     }
 }

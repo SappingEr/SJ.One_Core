@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SJ.One_Core.Models.AccountViewModels
 {
-    public class AvatarViewModel
+    public class AvatarViewModel : BaseEntityViewModel
     {
-        public string Id { get; set; }
-
         public bool Delete { get; set; }
 
         [DataType(DataType.Upload)]

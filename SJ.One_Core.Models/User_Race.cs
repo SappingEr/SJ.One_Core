@@ -2,7 +2,7 @@
 {
     public class User_Race
     {
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public Race Race { get; set; }
 
         public int RaceId { get; set; }
