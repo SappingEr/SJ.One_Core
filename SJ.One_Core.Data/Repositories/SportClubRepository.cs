@@ -1,6 +1,7 @@
 ﻿using SJ.One_Core.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SJ.One_Core.Data.Repositories
 {
@@ -9,13 +10,18 @@ namespace SJ.One_Core.Data.Repositories
         public SportClubRepository(SJOneContext context) : base(context)
         {
         }
-        public List<SportClub> GetByNameLocalitySportClubs(int id, string name)=>
-            GetSome(l => l.LocalityId == id).Where(c => c.Name.ToUpper().Contains(name.ToUpper())).ToList();
+        public async Task<List<SportClub>> GetByNameLocalitySportClubsAsync(int id, string name)
+        {
+            List<SportClub> localityClubs = await GetSomeAsync(l => l.LocalityId == id);
+            List<SportClub> byNameClubs = localityClubs.Where(c => c.Name.ToUpper().Contains(name.ToUpper())).ToList();
+            return byNameClubs;
+        }
+
 
     }
 
     public interface ISportClubRepository : IRepository<SportClub>
     {
-        List<SportClub> GetByNameLocalitySportClubs(int id, string name);
+        Task<List<SportClub>> GetByNameLocalitySportClubsAsync(int id, string name);
     }
 }

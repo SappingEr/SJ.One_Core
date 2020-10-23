@@ -1,24 +1,28 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using SJ.One_Core.Data.Paging;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace SJ.One_Core.Data.Repositories
 {
     public interface IRepository<T>
         where T : class
     {
-        int Add(T entity);
-        //Task AddAsync(T entity);
-
-        int Add(IList<T> entities);
-
-        int Update(T entity);
-        int Update(IList<T> entities);
-        int Delete(T entity);
-        T GetOne(int? id);
-        List<T> GetSome(Expression<Func<T, bool>> where);
-        List<T> GetAll();
-        List<T> GetAll<TSortField>(Expression<Func<T, TSortField>> orderBy, bool ascending);
+        Task<int> AddAsync(T entity);
+        Task<int> AddAsync(IList<T> entities);
+        Task<int> UpdateAsync(T entity);
+        Task<int> UpdateAsync(IList<T> entities);
+        Task<int> DeleteAsync(T entity);
+        Task<T> GetOneAsync(int? id);
+        Task<List<T>> GetAllAsync();
+        Task<List<T>> GetSomeAsync(Expression<Func<T, bool>> where);        
+        Task<IPaginate<T>> GetListAsync(Expression<Func<T, bool>> where = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+            int index = 0, int size = 4, bool enableTracking = true);
         List<T> ExecuteQuery(string sql);
         List<T> ExecuteQuery(string sql, object[] sqlParametersObjects);
     }

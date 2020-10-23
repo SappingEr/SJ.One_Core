@@ -6,6 +6,7 @@ using SJ.One_Core.Data.Repositories;
 using SJ.One_Core.Models;
 using SJ.One_Core.Models.AccountViewModels;
 using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -180,19 +181,19 @@ namespace SJ.One_Core.Controllers
                     Id = id,
                     ReturnUrl = Request.Headers["Referer"].ToString()
                 };
-
-                if (user.Locality == null)
-                {
-                    localityModel.Regions = regionRepository.GetAll()
-                        .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Name });
+                var regions = await regionRepository.GetAllAsync();
+                if (user.LocalityId == null)
+                {                    
+                    localityModel.Regions = regions.Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Name });
                 }
                 else
                 {
-                    Region region = user.Locality.Region;
+                    var locality= await localityRepository.GetOneAsync(user.LocalityId);
+                    var region = locality.Region;
                     int regionId = region.Id;
                     localityModel.RegionId = regionId;
 
-                    localityModel.Regions = regionRepository.GetAll()
+                    localityModel.Regions = regions
                         .Select(r => new SelectListItem
                         {
                             Value = r.Id.ToString(),
@@ -203,7 +204,7 @@ namespace SJ.One_Core.Controllers
                     localityModel.Localities = region.Localities
                         .Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name });
                 }
-                if (user.SportClub == null)
+                if (user.SportClubId == null)
                 {
                     localityModel.AddClub = true;
                 }
@@ -218,7 +219,7 @@ namespace SJ.One_Core.Controllers
             if (ModelState.IsValid && localityModel.LocalityId > 0)
             {
                 User user = await userManager.FindByIdAsync(localityModel.Id.ToString());
-                Locality locality = localityRepository.GetOne(localityModel.LocalityId);
+                Locality locality = await localityRepository.GetOneAsync(localityModel.LocalityId);
                 if (locality != null)
                 {
                     user.Locality = locality;
@@ -245,7 +246,7 @@ namespace SJ.One_Core.Controllers
         public async Task<ActionResult> СhooseSportClub(int id)
         {
             User user = await userManager.FindByIdAsync(id.ToString());
-            Locality locality = localityRepository.GetOne(user.LocalityId);
+            Locality locality = await localityRepository.GetOneAsync(user.LocalityId);
             if (user != null && locality != null)
             {
                 SportClubViewModel model = new SportClubViewModel
@@ -254,20 +255,23 @@ namespace SJ.One_Core.Controllers
                     ReturnUrl = Request.Headers["Referer"].ToString()
                 };
 
-                Region region = regionRepository.GetOne(locality.RegionId);
+                Region region = await regionRepository.GetOneAsync(locality.RegionId);
 
                 int regionId = region.Id;
                 int localityId = locality.Id;
                 model.ClubRegionId = regionId;
                 model.ClubLocalityId = localityId;
+                var regions = await regionRepository.GetAllAsync();
+                var regionLocalities = await localityRepository.GetSomeAsync(l => l.RegionId == regionId);
+                var localityClubs = await sportClubRepository.GetSomeAsync(c => c.LocalityId == localityId);
 
-                model.ClubRegions = regionRepository.GetAll()
+                model.ClubRegions = regions
                    .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Name, Selected = model.ClubRegionId.Equals(regionId) });
 
-                model.ClubLocalities = localityRepository.GetSome(l => l.RegionId == regionId)
+                model.ClubLocalities = regionLocalities
                    .Select(i => new SelectListItem { Value = i.Id.ToString(), Text = i.Name, Selected = model.ClubLocalityId.Equals(localityId) });
 
-                model.Clubs = sportClubRepository.GetSome(c => c.LocalityId == localityId)
+                model.Clubs = localityClubs
                     .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name });
 
                 return View(model);
@@ -281,15 +285,13 @@ namespace SJ.One_Core.Controllers
             if (ModelState.IsValid)
             {
                 User user = await userManager.FindByIdAsync(clubModel.Id.ToString());
-                SportClub sportClub = sportClubRepository.GetOne(clubModel.ClubId);
+                SportClub sportClub = await sportClubRepository.GetOneAsync(clubModel.ClubId);
                 sportClub.SportClubUsers.Add(user);
-                sportClubRepository.Update(sportClub);
+                await sportClubRepository.UpdateAsync(sportClub);
                 return RedirectToAction("UserInfo", new { clubModel.Id });
             }
             return View(clubModel);
         }
-
-
 
         [HttpGet, AllowAnonymous]
         public IActionResult Login(string returnUrl)
@@ -424,16 +426,16 @@ namespace SJ.One_Core.Controllers
                 userInfoModel.FirstName = user.FirstName;
                 userInfoModel.Surname = user.Surname;
                 userInfoModel.Gender = user.Gender;
-                userInfoModel.DOB = user.DOB;
-                Locality locality = localityRepository.GetOne(user.LocalityId);
-                if (locality != null)
+                userInfoModel.DOB = user.DOB;                
+                if (user.LocalityId != null)
                 {
+                    Locality locality = await localityRepository.GetOneAsync(user.LocalityId);                     
                     userInfoModel.Locality = locality.Name;
-                }
-                SportClub club = sportClubRepository.GetOne(user.SportClubId);
-                if (club != null)
+                }                
+                if (user.SportClubId != null)
                 {
-                    userInfoModel.Club = club.Name;
+                    SportClub sportClub = await sportClubRepository.GetOneAsync(user.SportClubId);
+                    userInfoModel.Club = sportClub.Name;
                 }
                 return View(userInfoModel);
             }

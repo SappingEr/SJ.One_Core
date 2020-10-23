@@ -39,7 +39,7 @@ namespace SJ.One_Core.Data
                 {
                     await userManager.AddToRoleAsync(user, "Admin");
                 }
-            }
+            }            
         }
 
     }
