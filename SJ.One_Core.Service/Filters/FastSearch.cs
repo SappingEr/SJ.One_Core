@@ -1,4 +1,4 @@
-﻿namespace SJ.One_Core.Data.Search
+﻿namespace SJ.One_Core.Service.Search
 {
     public class FastSearch
     {

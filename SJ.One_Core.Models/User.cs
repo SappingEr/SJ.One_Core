@@ -10,7 +10,7 @@ namespace SJ.One_Core.Models
         [FastSearch]
         public string FirstName { get; set; }
         [FastSearch]
-        public string Surname { get; set; }
+        public string Surname { get; set; }        
         public string FullName => $"{FirstName} {Surname}";
         public Status Status { get; set; }
         public Gender Gender { get; set; }

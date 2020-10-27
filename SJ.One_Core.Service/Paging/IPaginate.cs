@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SJ.One_Core.Data.Paging
+namespace SJ.One_Core.Service.Paging
 {
     public interface IPaginate<T>
     {

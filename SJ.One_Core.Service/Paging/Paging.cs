@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SJ.One_Core.Data.Paging
+namespace SJ.One_Core.Service.Paging
 {
     public static class Paging
     {
