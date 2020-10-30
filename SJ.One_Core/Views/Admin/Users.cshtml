@@ -1,0 +1,11 @@
+﻿@model SJ.One_Core.Models.AdminViewModels.UsersListVewModel
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1>
+    Users <span class="fa fa-caret-down"></span>
+</h1>
+<sort-link-helper text="Имя" controller="Admin" action="Users" expression="FirstName"></sort-link-helper>
+<sort-link-helper text="Фамилия" controller="Admin" action="Users" expression="Surname"></sort-link-helper>

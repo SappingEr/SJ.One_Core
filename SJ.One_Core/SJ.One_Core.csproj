@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="ModelAttributes\" />
+    <Folder Include="HtmlHelpers\" />
   </ItemGroup>
 
 </Project>

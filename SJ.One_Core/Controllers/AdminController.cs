@@ -2,6 +2,7 @@
 using SJ.One_Core.Data.Repositories;
 using SJ.One_Core.Models;
 using SJ.One_Core.Models.AdminViewModels;
+using SJ.One_Core.Service.Filters;
 using SJ.One_Core.Service.Search;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace SJ.One_Core.Controllers
             this.userRepository = userRepository;
         }
 
-        public async Task<IActionResult> Users()
+        public async Task<IActionResult> Users(FetchOptions fetchOptions)
         {
             FastSearch search = new FastSearch { SearchString = "Ан" };
             var t = userRepository.FastSearch(search);
@@ -30,7 +31,7 @@ namespace SJ.One_Core.Controllers
             //    Count = usersPaging.Count,
             //    Pages = usersPaging.Pages
             //};
-            UsersListVewModel userModel = new UsersListVewModel { Users = t };
+            UsersListVewModel userModel = new UsersListVewModel { FetchOptions = fetchOptions };
             return View(userModel);
         }
     }

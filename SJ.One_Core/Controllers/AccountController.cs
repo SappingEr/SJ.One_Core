@@ -6,7 +6,6 @@ using SJ.One_Core.Data.Repositories;
 using SJ.One_Core.Models;
 using SJ.One_Core.Models.AccountViewModels;
 using System;
-using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -183,12 +182,12 @@ namespace SJ.One_Core.Controllers
                 };
                 var regions = await regionRepository.GetAllAsync();
                 if (user.LocalityId == null)
-                {                    
+                {
                     localityModel.Regions = regions.Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Name });
                 }
                 else
                 {
-                    var locality= await localityRepository.GetOneAsync(user.LocalityId);
+                    var locality = await localityRepository.GetOneAsync(user.LocalityId);
                     var region = locality.Region;
                     int regionId = region.Id;
                     localityModel.RegionId = regionId;
@@ -426,12 +425,12 @@ namespace SJ.One_Core.Controllers
                 userInfoModel.FirstName = user.FirstName;
                 userInfoModel.Surname = user.Surname;
                 userInfoModel.Gender = user.Gender;
-                userInfoModel.DOB = user.DOB;                
+                userInfoModel.DOB = user.DOB;
                 if (user.LocalityId != null)
                 {
-                    Locality locality = await localityRepository.GetOneAsync(user.LocalityId);                     
+                    Locality locality = await localityRepository.GetOneAsync(user.LocalityId);
                     userInfoModel.Locality = locality.Name;
-                }                
+                }
                 if (user.SportClubId != null)
                 {
                     SportClub sportClub = await sportClubRepository.GetOneAsync(user.SportClubId);
