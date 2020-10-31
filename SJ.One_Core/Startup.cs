@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,7 +43,6 @@ namespace SJ.One_Core
                 .AddErrorDescriber<RuCustomIdentityErrorDescriber>()
                 .AddEntityFrameworkStores<SJOneContext>();
 
-
             services.Configure<WebEncoderOptions>(options =>
             {
                 options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All);
@@ -66,6 +66,7 @@ namespace SJ.One_Core
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
         }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager)
         {

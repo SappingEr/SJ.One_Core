@@ -3,7 +3,6 @@ using SJ.One_Core.Data.Repositories;
 using SJ.One_Core.Models;
 using SJ.One_Core.Models.AdminViewModels;
 using SJ.One_Core.Service.Filters;
-using SJ.One_Core.Service.Search;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,20 +17,23 @@ namespace SJ.One_Core.Controllers
             this.userRepository = userRepository;
         }
 
-        public async Task<IActionResult> Users(FetchOptions fetchOptions)
+        public async Task<IActionResult> Users(FetchOptions fetchOptions, int page = 1)
         {
-            FastSearch search = new FastSearch { SearchString = "Ан" };
-            var t = userRepository.FastSearch(search);
-            //var usersPaging = await userRepository.GetListAsync(where: i=>i.FirstName.Contains("Ан"), orderBy: x => x.OrderBy(x => x.Surname));
-            //PagingViewModel paging = new PagingViewModel
-            //{
-            //    From = usersPaging.From,
-            //    Index = usersPaging.Index,
-            //    Size = usersPaging.Size,
-            //    Count = usersPaging.Count,
-            //    Pages = usersPaging.Pages
-            //};
-            UsersListVewModel userModel = new UsersListVewModel { FetchOptions = fetchOptions };
+            int index = page - 1;
+            //FastSearch search = new FastSearch { SearchString = "Ан" };
+            //var t = userRepository.FastSearch(search);
+            var usersPaging = await userRepository.GetListAsync(null, orderBy: x => x.OrderBy(x => x.Surname), null, index, 4, false);
+            PagingViewModel paging = new PagingViewModel
+            {
+                From = usersPaging.From,
+                Index = usersPaging.Index,
+                Size = usersPaging.Size,
+                Count = usersPaging.Count,
+                Pages = usersPaging.Pages,
+                HasPrevious = usersPaging.HasPrevious,
+                HasNext = usersPaging.HasNext
+            };
+            UsersListVewModel userModel = new UsersListVewModel { Users = usersPaging.Items, Paging = paging, FetchOptions = fetchOptions };
             return View(userModel);
         }
     }

@@ -7,5 +7,38 @@
 <h1>
     Users <span class="fa fa-caret-down"></span>
 </h1>
-<sort-link-helper text="Имя" controller="Admin" action="Users" expression="FirstName"></sort-link-helper>
-<sort-link-helper text="Фамилия" controller="Admin" action="Users" expression="Surname"></sort-link-helper>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th><sort-link text="Email" asp-controller="Admin" asp-action="Users" expression="Email"></sort-link></th>
+            <th><sort-link text="Имя" asp-controller="Admin" asp-action="Users" expression="FirstName"></sort-link></th>
+            <th><sort-link text="Фамилия" asp-controller="Admin" asp-action="Users" expression="Surname"></sort-link></th>
+            <th>Дата регистрации</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.FirstName</td>
+                <td>@user.Surname</td>
+                <td>@user.RegistrationDate.Date</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+
+<page-link paging-model="@Model.Paging"></page-link>
+
+<ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+</ul>
