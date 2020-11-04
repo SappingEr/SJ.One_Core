@@ -23,8 +23,8 @@ namespace SJ.One_Core.Data.Repositories
         Task<IPaginate<T>> GetListAsync(Expression<Func<T, bool>> where = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
-            int index = 0, int size = 4, bool enableTracking = true);
-        List<T> FastSearch(FastSearch search);
+            int page = 1, int size = 30, bool enableTracking = true);
+        Task<List<T>> FastSearchAsync(FastSearch search, bool enableTracking = false);
         List<T> ExecuteQuery(string sql);
         List<T> ExecuteQuery(string sql, object[] sqlParametersObjects);
     }

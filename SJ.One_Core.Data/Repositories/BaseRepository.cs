@@ -72,23 +72,20 @@ namespace SJ.One_Core.Data.Repositories
         public Task<IPaginate<T>> GetListAsync(Expression<Func<T, bool>> where = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
-            int index = 0,
+            int page = 1,
             int size = 4,
-            bool enableTracking = true)
+            bool enableTracking = false)
         {
             IQueryable<T> query = dbset;
             if (!enableTracking) query = query.AsNoTracking();
-
-            if (include != null) query = include(query);
-
             if (where != null) query = query.Where(where);
-
+            if (include != null) query = include(query);
             if (orderBy != null)
-                return orderBy(query).PagingAsync(index, size, 0);
-            return query.PagingAsync(index, size, 0);
+                return orderBy(query).PagingAsync(page, size, 0);
+            return query.PagingAsync(page, size, 0);
         }
 
-        public List<T> FastSearch(FastSearch search)
+        public async Task<List<T>> FastSearchAsync(FastSearch search, bool enableTracking = false)
         {
             List<T> searchResult = new List<T>();
             if (search != null)
@@ -96,7 +93,7 @@ namespace SJ.One_Core.Data.Repositories
                 if (!string.IsNullOrWhiteSpace(search.SearchString))
                 {
                     IQueryable<T> query = dbset;
-                    query = query.AsNoTracking();
+                    if (!enableTracking) query = query.AsNoTracking();
                     foreach (var prop in typeof(T).GetProperties())
                     {
                         var attr = prop.GetCustomAttribute<FastSearchAttribute>();
@@ -106,7 +103,7 @@ namespace SJ.One_Core.Data.Repositories
                         }
                         string crit = $"{prop.Name}.Contains(@0)";
                         query = query.Where(crit, search.SearchString).Take(10);
-                        searchResult.AddRange(query);
+                        searchResult = await query.ToListAsync();
                     }
                 }
             }

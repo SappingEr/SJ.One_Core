@@ -8,11 +8,12 @@ namespace SJ.One_Core.Data.Repositories
     public class LocalityRepository : BaseRepository<Locality>, ILocalityRepository
     {
         public LocalityRepository(SJOneContext context) : base(context)
-        {
+        {    
+            
         }
 
         public async Task<List<Locality>> GetByNameRegionLocalitiesAsync(int id, string name)
-        {
+        {           
             List<Locality> regionLocalities = await GetSomeAsync(l => l.RegionId == id);
             List<Locality> byNameLocalities = regionLocalities.Where(c => c.Name.ToUpper().Contains(name.ToUpper())).ToList();
             return byNameLocalities;

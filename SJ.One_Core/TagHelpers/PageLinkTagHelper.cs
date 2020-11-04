@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -35,13 +34,13 @@ namespace SJ.One_Core.TagHelpers
                 if (key != "page")
                 {
                     query += "&" + key + "=" + request.Query[key];
-                }                
+                }
             }
 
             int from = 1;
             int pages = PagingModel.Pages;
 
-            output.TagName = "ul";            
+            output.TagName = "ul";
             output.Attributes.SetAttribute("class", "pagination");
             if (PagingModel.HasPrevious)
             {
@@ -60,7 +59,7 @@ namespace SJ.One_Core.TagHelpers
             }
             if (PagingModel.HasNext)
             {
-                AddPageLink(output, path + $"?page={PagingModel.Index + 2}" + query, "&raquo;");               
+                AddPageLink(output, path + $"?page={PagingModel.Page + 1}" + query, "&raquo;");
             }
             output.Content.AppendHtml("</ul>");
         }

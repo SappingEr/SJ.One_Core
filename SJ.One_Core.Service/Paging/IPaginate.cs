@@ -12,6 +12,8 @@ namespace SJ.One_Core.Service.Paging
 
         int Count { get; }
 
+        int Page { get; }
+
         int Pages { get; }
 
         List<T> Items { get; }

@@ -2,8 +2,10 @@
 {
     public class UserFilter
     {
-        public string UserName { get; set; }
-        public string FIO { get; set; }
-        public DateRange Date { get; set; }
+        public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string Surname { get; set; }
+        public string DOB { get; set; }
+        public DateRange DOBRange { get; set; }
     }
 }
